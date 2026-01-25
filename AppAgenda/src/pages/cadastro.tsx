@@ -33,7 +33,7 @@ export default function Cadastro(){
             setNome("")
             setEmail("")
             setSenha("")
-            navigate("/Agenda")
+            navigate("/Projeto-AppAgenda/")
         })
 
     } catch(error: any) {
@@ -63,6 +63,7 @@ export default function Cadastro(){
                         onChange={(e) => setNome(e.target.value)}
                         required
                         minLength={4}
+                        maxLength={8}
                         className="w-[350px] bg-green-200/50 border rounded my-2 h-[50px] p-1 text-lg"
                     >
                 

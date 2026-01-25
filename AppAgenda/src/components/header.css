@@ -1,0 +1,13 @@
+
+.x1{
+    transform: rotate(45deg) translateY(3px);
+    transition: all 0.5s;
+
+    
+}
+
+
+.x2{
+    transform: rotate(-45deg) translateY(-6px);
+    transition: all 0.5s;
+}

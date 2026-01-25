@@ -22,7 +22,7 @@ export default function Login(){
         console.log("Usuario logado")
         setEmail("")
         setSenha("")
-        navigate("/Agenda")
+        navigate("/Projeto-AppAgenda/")
 
 
 

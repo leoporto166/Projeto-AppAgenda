@@ -8,6 +8,8 @@ tailwindcss(),
 
 server: {
     open: '/NOME'
-}
+},
+
+base: "/Projeto-AppAgenda/",
 
 })
