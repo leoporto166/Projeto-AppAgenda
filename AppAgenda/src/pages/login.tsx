@@ -1,12 +1,14 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState, type FormEvent } from "react";
 import { auth } from "../services/firebase";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Login(){
 
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
+    const navigate = useNavigate()
 
     async function login(event: FormEvent) {
 
@@ -20,6 +22,7 @@ export default function Login(){
         console.log("Usuario logado")
         setEmail("")
         setSenha("")
+        navigate("/Agenda")
 
 
 

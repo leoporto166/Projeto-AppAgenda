@@ -1,4 +1,4 @@
-import Cadastro from "./pages/cadastro"
+import Home from './pages/home'
 import './App.css'
 import { Outlet } from "react-router-dom"
 
@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-     <h1>OI</h1>
+     <Home></Home>
      <Outlet />
     </>
   )

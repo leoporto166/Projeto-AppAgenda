@@ -3,7 +3,7 @@ import { auth, db } from "../services/firebase"
 import {doc, setDoc } from "firebase/firestore/lite"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { useState, type FormEvent } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 
 export default function Cadastro(){
@@ -11,6 +11,7 @@ export default function Cadastro(){
     const [nome, setNome] = useState("")
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
+    const navigate = useNavigate()
 
     async function cadastrar(event: FormEvent){
         event.preventDefault()
@@ -32,6 +33,7 @@ export default function Cadastro(){
             setNome("")
             setEmail("")
             setSenha("")
+            navigate("/Agenda")
         })
 
     } catch(error: any) {
