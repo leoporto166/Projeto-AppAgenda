@@ -1,93 +1,90 @@
 
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/header";
-import { getAuth, onAuthStateChanged } from "firebase/auth/cordova";
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore/lite";
-import { db } from "../services/firebase";
-import { useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, serverTimestamp, setDoc, onSnapshot } from "firebase/firestore"
+import { auth, db } from "../services/firebase"
+import { useEffect, useState, type FormEvent } from "react";
 
 export default function CalendarDay(){
 
     const {day} = useParams<{ day: string }>()
     const navigate = useNavigate()
-    const[name, setNome] = useState("")
     const[tamanhoTela, setTamanhoTela] = useState({
         width: window.innerWidth,
         height: window.innerHeight
     })
-    const[informacoes, setInformacoes] = useState<any>(null)
-
-    
-
-
-    async function buscarNome() {
+    const[informacoes, setInformacoes] = useState<any[]>([])
+    const[titulo, setTitulo] = useState("")
+    const[descricao, setDescricao] = useState("")
 
 
-        
-        const auth = getAuth()     
-        
-        const unsub = onAuthStateChanged(auth, async (user) => {
-        if(!user){
-        navigate("/Projeto-AppAgenda/Cadastro")
-        return
-          
-        }
-        
-        const ref = doc(db, "User", user.uid)
-        const snap = await getDoc(ref)
 
-        if(snap.exists()){
-            setNome(snap.data().nome)
-        }
-    
+
+useEffect(() => {
+  const auth = getAuth()
+
+  const unsubAuth = onAuthStateChanged(auth, (user) => {
+    if (!user || !day) return
+
+    const ref = collection(
+      db, 
+      "Usuario",
+      user.uid,
+      "eventos",
+      day,
+      "lista"
+    )
+
+    const q = query(ref, orderBy("createdAt", "asc"))
+
+    const unsubData = onSnapshot(q, (snap) => {
+      const dados = snap.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }))
+
+      console.log("EVENTOS:", dados)
+      setInformacoes(dados)
     })
 
-    return () => unsub()
+    return () => unsubData()
+  })
 
+  return () => unsubAuth()
+}, [day])
+
+
+    async function adicionarInfo(e: FormEvent) {
+
+
+        e.preventDefault()
         
 
-    }
-
-
-    async function buscarInfo() {
-
-        const auth = getAuth()
-        const user = auth.currentUser
- 
-        if(!auth || !user || !day) return
-        
-        const docRef = doc(db, "Usuario", user.uid, "eventos", day)
-        const snap = await getDoc(docRef)
-
-        if(snap.exists()){
-            setInformacoes(snap.data())
-        }
-
-    }
-
-
-    async function adicionarInfo() {
-        
-        const auth = getAuth()
         const user = auth.currentUser
 
         if(!user || !day) return
-        
-        const ref = doc(db, "Usuario", user.uid, "eventos", day)
 
-        await setDoc(ref, {
-            titulo: "",
-            descricao: "",
-            createdAt: new Date()
+        await addDoc(collection(db, "Usuario", user.uid, "eventos", day, "lista"), {
+            titulo,
+            descricao,
+            createdAt: serverTimestamp()
         })
+
+        .then(() => {
+            setTitulo("")
+            setDescricao("")
+
+        })
+
+        console.log("DAY:", day)
+
 
     }
 
 
     useEffect(() => {
 
-        buscarNome()
-        buscarInfo()
 
         function Renderizar() {
 
@@ -112,6 +109,28 @@ export default function CalendarDay(){
         <>
         
         <Header></Header>
+
+        <form onSubmit={adicionarInfo}>
+            <input type="text"
+            value={titulo}
+            onChange={(e) => setTitulo(e.target.value)}
+            ></input>
+            <input type="text"
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
+            />
+            <button type="submit" onClick={() => {console.log(informacoes)}} className="cursor-pointer">Adicionar</button>
+        </form>
+
+        {
+            informacoes.map((info) => (
+                <>
+                
+                {info.titulo} <br />
+                {info.descricao} <br /> <br />
+                </>
+            ))
+        }
         
         </>
     )

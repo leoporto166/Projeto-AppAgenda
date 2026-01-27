@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 import "./header.css"
-import { getAuth } from "firebase/auth"
-import { doc, getDoc } from "firebase/firestore/lite"
-import { db } from "../services/firebase"
+import { doc, getDoc } from "firebase/firestore"
+import { db, auth } from "../services/firebase"
 import { useNavigate } from "react-router-dom"
 import { onAuthStateChanged } from "firebase/auth/cordova"
 import { FaUserCircle } from "react-icons/fa"
@@ -27,7 +26,6 @@ export default function Header(){
 
 
         
-        const auth = getAuth()     
         
         const unsub = onAuthStateChanged(auth, async (user) => {
         if(!user){

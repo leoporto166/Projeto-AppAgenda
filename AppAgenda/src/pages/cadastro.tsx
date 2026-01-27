@@ -1,6 +1,6 @@
 
 import { auth, db } from "../services/firebase"
-import {doc, setDoc } from "firebase/firestore/lite"
+import {doc, setDoc } from "firebase/firestore"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { useState, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
@@ -21,20 +21,22 @@ export default function Cadastro(){
         const userCredential = await createUserWithEmailAndPassword(auth, email, senha)
 
         const user = userCredential.user
-
         await setDoc(doc(db, "User", user.uid), {
             nome: nome,
             email: user.email,
             createdAt: new Date()
          })
 
-        .then(() => {
-            console.log("Usuario cadastrado")
-            setNome("")
-            setEmail("")
-            setSenha("")
-            navigate("/Projeto-AppAgenda/")
+    .then(() =>
+        { 
+            console.log("Usuario cadastrado") 
+            setNome("") 
+            setEmail("") 
+            setSenha("") 
+            navigate("/Projeto-AppAgenda/") 
+
         })
+
 
     } catch(error: any) {
             console.log(`ERROR: ${error}`)
@@ -92,7 +94,7 @@ export default function Cadastro(){
 
                 <div className="flex">
                     <Link className="underline mt-1 font-medium cursor-pointer"
-                    to={"/Agenda/Login"}>Ja tem uma conta? ENTRAR!</Link>
+                    to={"/Projeto-AppAgenda/Login"}>Ja tem uma conta? ENTRAR!</Link>
                 </div>
             </div>
         </>
