@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import "./header.css"
 import { doc, getDoc } from "firebase/firestore"
 import { db, auth } from "../services/firebase"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { onAuthStateChanged } from "firebase/auth/cordova"
 import { FaUserCircle } from "react-icons/fa"
 
@@ -104,15 +104,20 @@ export default function Header(){
                                         <div className="bg-black w-[25px] h-[2px] my-1 "></div>
                                         <div className="bg-black w-[25px] h-[2px] my-1 "></div>
                             </div>
-                            <div className="m-2 mt-3 flex w-full items-center">
-                                <h1 className={` font-bold z-10 ${menuActive
-                                    ? "" : ""}`}>Plann</h1>
-                            </div>
-                            <div className="flex items-center font-medium">
-                                <FaUserCircle size={20}></FaUserCircle>
-                                {nome}
-                     
-                            </div>
+                            
+                                <div className="m-2 mt-3 flex w-full items-center">
+                                    <Link to={"/Projeto-AppAgenda/"}>
+                                        <h1 className={` font-bold z-10 ${menuActive
+                                            ? "" : ""}`}>Plann</h1> 
+                                    </Link>
+                                </div>
+                            
+                            <Link to={"/Projeto-AppAgenda/Login"}>
+                                <div className="flex items-center font-medium">
+                                    <FaUserCircle size={20}></FaUserCircle>
+                                    {nome}
+                                </div>
+                            </Link>
                         </section>
                         
                                      </header>

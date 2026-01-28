@@ -17,7 +17,7 @@ export default function Calendar() {
     const navigate = useNavigate()
 
   return (
-    <div className="p-4 bg-white  ">
+    <div className=" bg-white  ">
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
